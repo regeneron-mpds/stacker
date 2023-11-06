@@ -21,7 +21,7 @@ stacker/
    testing/
    setup/
    data/
-   .gitignore
+   LICENSE
    README.md
    environment.yaml
    requirements.txt
