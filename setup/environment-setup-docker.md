@@ -1,0 +1,41 @@
+# Steps to set up an AWS and Docker-enabled STaCker instance
+
+* Step 1: Create instance
+* Step 2: login to instance change user
+
+```
+sudo su ubuntu
+```
+
+* Step 3: Generate RSA key
+
+```
+ssh-keygen -t rsa -C "your-email@gmail.com"
+cat ~/.ssh/id_rsa.pub
+```
+
+* Step 4: Copypasta onto github/bitbucket
+* Step 5: Pull the repo
+
+```
+git clone ssh://git@ritscm.regeneron.com/~peter.lais/regn-synth.git
+```
+
+* Step 6: docker pull (Update the image to latest when you pull)
+
+```
+docker pull nvcr.io/nvidia/tensorflow:22.07-tf2-py3
+```
+
+* Step 7: docker run (spin up our fresh docker environment), note the image id needs to match (docker image ls)
+```
+docker run --gpus all -it \
+-p 8888:8888 -p 8787:8787 -p 8786:8786 \
+-v ${PWD}:/workspace --shm-size=2g --ulimit memlock=-1 e312fc20f2c4
+```
+
+* Step 8: Install dependencies with conda, assuming conda is installed:
+
+```
+conda env create --name <envname> --file=environments.yaml
+```
