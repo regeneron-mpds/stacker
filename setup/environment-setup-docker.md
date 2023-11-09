@@ -10,15 +10,15 @@ sudo su ubuntu
 * Step 3: Generate RSA key
 
 ```
-ssh-keygen -t rsa -C "your-email@gmail.com"
+ssh-keygen -t rsa -C "your-email@XXX.com"
 cat ~/.ssh/id_rsa.pub
 ```
 
-* Step 4: Copypasta onto github/bitbucket
+* Step 4: Copypasta onto github
 * Step 5: Pull the repo
 
 ```
-git clone ssh://git@ritscm.regeneron.com/~peter.lais/regn-synth.git
+git clone https://github.com/regeneron-mpds/stacker.git
 ```
 
 * Step 6: docker pull (Update the image to latest when you pull)
