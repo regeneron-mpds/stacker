@@ -40,7 +40,7 @@ a breakdown of the pipeline and its use/mechanism, see the `setup/` folder. The 
 
 ## Demo
 
-Demonstration of how to apply STaCker on data used in this work are provided under `testing/` folder in each **Python notebook (not scripts).** 
+Demonstration of how to apply STaCker on data used in this work are provided under `testing/` folder in each **Python notebook.** 
 Please follow the comments provided in each notebook for guidance. The expected outputs are noted 
 in the notebooks. The run time is typically in the order of seconds. 
 
