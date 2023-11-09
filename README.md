@@ -27,17 +27,21 @@ stacker/
    requirements.txt
 ```
 
-## Setup
+## Installation
+*  Hardware requirement:
+*  Operating system tested: Ubuntu 18.04.6 LTS
+*  Software dependencies: python==3.8.10, numpy==1.21.6, pandas==1.3.5, libopenexr-dev==2.3.0-6build1,
+   neurite==0.2, voxelmorph==0.2,opensimplex==0.4.2,scikit-image== 0.21.0, antspyx==0.3.3, SimpleITK== 2.2.1
+   tensorflow==2.9.1+nv22.7, tensorflow-graphics==2021.12.3,tensorflow-addons==0.17.0,tensorflow-datasets==3.2.1,
+   tensorflow-metadata==1.9.0,scanpy== 1.9.1, matplotlib==3.5.0, anndata=0.8.0, Pillow==9.2.0
+For detailed instructions about how to configure your environment, use scripts, and (eventually)
+a breakdown of the pipeline and its use/mechanism, see the `setup/` folder. The installation may take a few hours.
 
-For instructions about how to configure your environment, use scripts, and (eventually)
-a breakdown of the pipeline and its use/mechanism, see the `setup/` folder.
+## Demo
 
-## Documentation
-
-Documentation is provided under `testing/` folder in each **Python notebook (not scripts).** 
-Please follow the comments provided in each notebook for guidance as to what
-the notebook is doing. A brief snippet is provided at the top of each
-non-archived notebook to explain its purpose as well.
+Demonstration of how to apply STaCker on data used in this work are provided under `testing/` folder in each **Python notebook (not scripts).** 
+Please follow the comments provided in each notebook for guidance. The expected outputs and runtime are noted 
+in the notebook. 
 
 ## License
 
