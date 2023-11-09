@@ -32,7 +32,7 @@ docker pull nvcr.io/nvidia/tensorflow:22.07-tf2-py3
 ```
 docker run --gpus all -it \
 -p 8888:8888 -p 8787:8787 -p 8786:8786 \
--v ${PWD}:/workspace --shm-size=2g --ulimit memlock=-1 e312fc20f2c4
+-v ${PWD}:/workspace --shm-size=2g --ulimit memlock=-1 YOUR_DOCKER_IMAGE_ID
 ```
 
 * Step 8: Install dependencies with conda, assuming conda is installed:
