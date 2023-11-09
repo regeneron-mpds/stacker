@@ -1,6 +1,6 @@
-# Steps to set up an AWS and Docker-enabled STaCker instance
+# Steps to set up an Docker-enabled STaCker instance
 
-* Step 1: Create instance
+* Step 1: Prepare GPU empowered computing node (GPU, Memory)
 * Step 2: login to instance change user
 
 ```
