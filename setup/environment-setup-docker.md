@@ -14,8 +14,10 @@ ssh-keygen -t rsa -C "your-email@XXX.com"
 cat ~/.ssh/id_rsa.pub
 ```
 
-* Step 4: Copypasta onto github
-* Step 5: Pull the repo
+* Step 4: Copypasta rsa key above onto github
+* Step 5: mkdir workspace
+*         cd workspace
+*         Pull the repo
 
 ```
 git clone https://github.com/regeneron-mpds/stacker.git
