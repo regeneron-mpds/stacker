@@ -15,11 +15,10 @@ cat ~/.ssh/id_rsa.pub
 ```
 
 * Step 4: Copypasta rsa key above onto github
-* Step 5: Setup mounting directory and pull the repo
-*         mkdir workspace
-*         cd workspace
-*        
+* Step 5: Setup mounting directory and pull the repo        
 ```
+mkdir workspace
+cd workspace
 git clone https://github.com/regeneron-mpds/stacker.git
 ```
 
