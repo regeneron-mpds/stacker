@@ -1,8 +1,6 @@
 # Environment setup
 
-If you're working within Regeneron, some permissions may be denied
-to you. This makes it difficult for packages to work correctly. This
-file contains the basic procedure for setting up a suitable environment
+This file contains the basic procedure for setting up a suitable environment
 and also contains some troubleshooting guidelines if things go wrong.
 
 ## Setting up the repository
