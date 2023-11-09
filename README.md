@@ -1,4 +1,4 @@
-# STaCKer: a deep-learning-enabled spatial transcriptomics registration framework
+# STaCKer: a deep-learning-enabled Spatial Transcriptomics Common coordinate builder
 
 Establishing a common coordinate framework (CCF) among multiple spatial transcriptome slices is essential for data comparison and integration yet remains a challenge. Here we present a deep learning algorithm STaCker that unifies the coordinates of transcriptomic slices via an image registration process. STaCker derives a composite image representation by integrating tissue image and gene expressions that are transformed to be resilient to noise and batch effects. Trained exclusively on diverse synthetic data, STaCker overcomes the training data scarcity and is applicable to any tissue type. Its performance on various benchmarking datasets shows a significant increase in spatial concordance in aligned slices, surpassing existing methods. STaCker also successfully harmonizes multiple real spatial transcriptome datasets. These results indicate that STaCker is a valuable computational tool for constructing a CCF with spatial transcriptome data.  
 
