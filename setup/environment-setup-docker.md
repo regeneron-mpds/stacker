@@ -35,8 +35,10 @@ docker run --gpus all -it \
 -v ${PWD}:/workspace --shm-size=2g --ulimit memlock=-1 YOUR_DOCKER_IMAGE_ID
 ```
 
-* Step 8: Install dependencies with conda, assuming conda is installed:
+* Step 8: Install dependencies:
 
 ```
-conda env create --name <envname> --file=environments.yaml
+apt updateapt upgrade apt
+pip install --upgrade pip
+pip install -r dependencies.txt
 ```
