@@ -1,6 +1,6 @@
 # Steps to set up an Docker-enabled STaCker instance
 
-* Step 1: Prepare a GPU empowered computing instance (GPU, Memory); Operating System tested is Ubuntu 18.04.6 LTS
+* Step 1: Prepare a NVIDIA GPU empowered computing instance (hardware config tested is 4xGPU, 192GB Memory); Operating System tested is Ubuntu 18.04.6 LTS
 * Step 2: change user
 
 ```
