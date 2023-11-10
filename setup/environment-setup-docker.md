@@ -38,7 +38,8 @@ docker run --gpus all -it \
 * Step 8: Install dependencies:
 
 ```
-apt updateapt upgrade apt
+apt update
+apt upgrade apt
 pip install --upgrade pip
 pip install -r dependencies.txt
 ```
