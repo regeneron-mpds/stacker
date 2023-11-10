@@ -1,4 +1,4 @@
-# STaCKer: a deep-learning-enabled Spatial Transcriptomics Common coordinate builder
+# STaCker: a deep-learning-enabled Spatial Transcriptomics Common coordinate builder
 
 Establishing a common coordinate framework (CCF) among multiple spatial transcriptome slices is essential for data comparison and integration yet remains a challenge. Here we present a deep learning algorithm STaCker that unifies the coordinates of transcriptomic slices via an image registration process. STaCker derives a composite image representation by integrating tissue image and gene expressions that are transformed to be resilient to noise and batch effects. Trained exclusively on diverse synthetic data, STaCker overcomes the training data scarcity and is applicable to any tissue type. Its performance on various benchmarking datasets shows a significant increase in spatial concordance in aligned slices, surpassing existing methods. STaCker also successfully harmonizes multiple real spatial transcriptome datasets. These results indicate that STaCker is a valuable computational tool for constructing a CCF with spatial transcriptome data.  
 
@@ -24,11 +24,11 @@ stacker/
    LICENSE
    README.md
    environment.yaml
-   requirements.txt
+   dependencies.txt
 ```
 
 ## Installation
-*  Hardware requirement:
+*  Hardware configuration tested: 4xNVIDIA GPUs, 48xvCPUs, 192GB memory
 *  Operating system tested: Ubuntu 18.04.6 LTS
 *  Software dependencies: python==3.8.10, numpy==1.21.6, pandas==1.3.5, libopenexr-dev==2.3.0-6build1,
    neurite==0.2, voxelmorph==0.2, opensimplex==0.4.2, scikit-image== 0.21.0, antspyx==0.3.3, SimpleITK== 2.2.1,
