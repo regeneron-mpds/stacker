@@ -2,6 +2,7 @@
 # cropAdata, padAdata, scaleData, iterModel, scale_spatial_coords2, makeContourImg, getCountourImage2
 
 from PIL import Image
+from keras import backend as K
 import numpy as np
 import pandas as pd
 import ants
@@ -110,7 +111,7 @@ def cropAdata(adata,spatial_key,library_id, padratio=0.1, doMask=False,withOuts=
     else:
         return adata_trim
 
-def optPadlength(tissuelength, padratio, spotCoordsTIF,scale_imgIntensity, scalescalefactor, dev4search=0.2, ninterval4search=50):
+def optPadlength(tissuelength, padratio, spotCoordsTIF,scale_imgIntensity, scalefactor, dev4search=0.2, ninterval4search=50):
     spotMinXtif=spotCoordsTIF[:,0].min()
     spotMinYtif=spotCoordsTIF[:,1].min()
     htif,wtif,ncolor=scale_imgIntensity.shape
@@ -159,7 +160,7 @@ def optPadlength2(tissuelength, padratio, spotCoordsTIF, scale_imgIntensity,scal
     for each in np.linspace(-padratio*dev4search, padratio*dev4search, ninterval4search):
         currentratioX=padratio+each
         currentpadlengthX=min(min(round(tissuelength*currentratioX),spotMinXtif), wtif/scalefactor-spotCoordsTIF[:,0].max())
-        newMinX=spotMinXtif-currentpaportdlengthX 
+        newMinX=spotMinXtif-currentpadlengthX 
         currentdeltaX=np.sum(np.abs((np.array(spotCoordsTIF[:,0])-newMinX)*scalefactor-np.round((np.array(spotCoordsTIF[:,0])-newMinX)*scalefactor)))
         if currentdeltaX<bestdeltaX:
             bestdeltaX=currentdeltaX
@@ -175,7 +176,7 @@ def optPadlength2(tissuelength, padratio, spotCoordsTIF, scale_imgIntensity,scal
             
     return [bestratioX,bestratioY]    
 
-def optPadlength3(tissuelength, padratio, spotCoordsTIF,scale_ImagegIntensity, scalefactor, dev4search=0.2, ninterval4search=50):
+def optPadlength3(tissuelength, padratio, spotCoordsTIF,scale_imgIntensity, scalefactor, dev4search=0.2, ninterval4search=50):
     refIntensity=np.array([scale_imgIntensity[round(spotCoordsTIF[x,1]*scalefactor),
                                      round(spotCoordsTIF[x,0]*scalefactor),:] 
                 for x in range(spotCoordsTIF.shape[0])]).reshape(spotCoordsTIF.shape[0],3)
@@ -349,9 +350,9 @@ def padAdata(adata,spatial_key,library_id, padratio=0.1, doMask=False, withOuts=
 
 
     newMinX=xy_indices[:,0].min()-bestpadlengthX # col/width/left
-    #newMaxX=xy_indices[:,0].max()+bestpadlengthX
+    newMaxX=xy_indices[:,0].max()+bestpadlengthX
     newMinY=xy_indices[:,1].min()-bestpadlengthY # row/height/top
-    #newMaxY=xy_indices[:,1].max()+bestpadlengthY
+    newMaxY=xy_indices[:,1].max()+bestpadlengthY
 
 
     
@@ -403,7 +404,7 @@ def padAdata(adata,spatial_key,library_id, padratio=0.1, doMask=False, withOuts=
     adata_pad.obs=newobs
     adata_pad.obsm=newobsm
     if withOuts:
-        return [adata_pad, {'padlength':padlength,'scalehigh':scalehigh,'tissuelength':tissuelength,'hnew_width':hnew_width,'hnew_height':hnew_height,
+        return [adata_pad, {'padlength':[bestpadlengthX,bestpadlengthY],'scalehigh':scalehigh,'tissuelength':tissuelength,'hnew_width':hnew_width,'hnew_height':hnew_height,
                         'himgMinX':himgMinX, 'himgMinY':himgMinY,
                        'newMinX':newMinX,'newMaxX':newMaxX,'newMinY':newMinY,'newMaxY':newMaxY}]
     else:
@@ -455,7 +456,6 @@ def dice_coef_multilabel(y_true, y_pred, numLabels):
         dice += dice_coef(y_true[:,:,:,index], y_pred[:,:,:,index])
     return dice/numLabels # taking average
 
-from keras import backend as K
 def iou_coef(y_true, y_pred, smooth=1):
   intersection = K.sum(K.abs(y_true * y_pred), axis=[1,2,3])
   union = K.sum(y_true,[1,2,3])+K.sum(y_pred,[1,2,3])-intersection

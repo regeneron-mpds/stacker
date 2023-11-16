@@ -9,6 +9,7 @@ Last updated: 10/15/2022
 
 import tensorflow as tf
 import voxelmorph as vxm
+import numpy as np
 
 def ncc_metric(y_true: tf.Tensor, y_pred: tf.Tensor, sample_weight: tf.Tensor = None) -> tf.Tensor:
     """

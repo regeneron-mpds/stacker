@@ -24,7 +24,7 @@ def getCountourImage2(seg_image):
     filters = []
     for i in [0, 1, 2]:
      for j in [0, 1, 2]:
-        filter = np.zeros([3,3], dtype=np.int)
+        filter = np.zeros([3,3], dtype=int)
         if i ==1 and j==1:
             pass
         else:
