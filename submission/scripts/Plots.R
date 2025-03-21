@@ -8,7 +8,7 @@ badcolor=colors()[which(sapply(colors(),function(x){grep("(white|aliceroyalblue|
 colorbank=c("antiquewhite4",maincolor, colors()[!(colors() %in% c(badcolor,maincolor))]);
 minicolorbank=c('cyan','red2','darkorange')
 
-rootdir='submission/git/'
+rootdir='../../submission/'
 
 ################## Figure 3
 # 10 runs
