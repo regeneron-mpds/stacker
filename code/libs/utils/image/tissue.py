@@ -12,7 +12,7 @@ import numpy as np
 from PIL import Image
 from skimage.color import rgb2hsv
 from skimage.filters import threshold_otsu
-from skimage.morphology import dilation, area_opening, erosion
+from skimage.morphology import dilation, area_opening, erosion, remove_small_holes
 
 from .image import resize_to_max_dim_pil
 
@@ -87,7 +87,7 @@ def istissue(mask: np.ndarray, roi: Collection[int] = None,
 
 # img is numpy rgb
 def tissue_mask_basic(img: np.ndarray, downsampled_max_dim: Union[int, None] = 512,
-                      area_threshold: int = 512, connectivity: int = 4) -> np.ndarray:
+                      area_threshold: int = 512, connectivity: int = 4, rounds=1) -> np.ndarray:
     """
     A simple function that masks the regions of histology slides where no tissues are present.
 
@@ -128,15 +128,20 @@ def tissue_mask_basic(img: np.ndarray, downsampled_max_dim: Union[int, None] = 5
     img_hue_mask = dilation(area_opening(erosion(area_opening(
         img_hue_mask, connectivity=connectivity, area_threshold=area_threshold)),
         connectivity=connectivity, area_threshold=area_threshold))
-    
+    if rounds>1:
+        counter=1
+        for counter in range(2,rounds):
+            img_hue_mask=dilation(area_opening(img_hue_mask))
+        img_hue_mask=remove_small_holes(img_hue_mask, area_threshold=1000)
+        
     if downsampled_max_dim is not None:
         return np.array(Image.fromarray(img_hue_mask).resize(orig_size,
-                                                             resample=Image.Resampling.NEAREST))
+                                                             resample=Image.Resampling.NEAREST)) #Resampling
     else: return img_hue_mask
 
 # V2
 
-def standard_mask_fn(pil_im: Image, max_mask_dim: int = 512) -> Image:
+def standard_mask_fn(pil_im: Image, max_mask_dim: int = 512,connectivity=4,rounds=1) -> Image:
     """
     Standard mask function used by this library to mask histology slides. See tissue_mask_basic
     for implementation details.
@@ -158,6 +163,6 @@ def standard_mask_fn(pil_im: Image, max_mask_dim: int = 512) -> Image:
     thumbnail_mask = tissue_mask_basic(img=np.asarray(thumbnail),
                                        downsampled_max_dim=max_mask_dim,
                                        area_threshold=max_mask_dim,
-                                       connectivity=4)
+                                       connectivity=connectivity,rounds=rounds)
     thumbnail_mask_pil = Image.fromarray(thumbnail_mask)
     return thumbnail_mask_pil.resize(pil_im.size, Image.Resampling.NEAREST).convert('1')

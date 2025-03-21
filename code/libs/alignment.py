@@ -509,7 +509,7 @@ def register(im_mov: Image.Image,
              mode: str = 'dense',
              model: EnrichedFunctionalModel = None,
              dense_patch_shape: Tuple[int, int] = None,
-             dense_patch_overlap: int = 0,
+             dense_patch_overlap: int = 128,
              dense_batch_size: int = 4,
              dense_origin: str = 'tl',
              dense_moving_img_name: str = 'moving_img',
@@ -517,8 +517,9 @@ def register(im_mov: Image.Image,
              dense_deff_name: str = 'pos_flow',
              dense_inv_deff_name: str = 'neg_flow',
              dense_normalize: bool = True,
-             search_factor=20,
+             search_factor=10,
              use_principal_axis=True,
+             type_of_transform='Affine',
              verbose: bool = False
              ):
     """
@@ -730,12 +731,12 @@ def register(im_mov: Image.Image,
         
         # perform affine registration; omit itk for now.
         if search_factor>=20:
-         print('affine initializer is on')
+         #print('initializer is on')
          im_mov_ra, mask_mov_ra, aff_tfm_info = ants_align_pil2(mov_pil=im_mov_r,
                                                               fix_pil=im_fix_r,
                                                               mov_mask_pil=mask_mov_r,
                                                               defaultvalue=defaultvalue,
-                                                              type_of_transform='Affine',
+                                                              type_of_transform=type_of_transform,
                                                               search_factor=search_factor,
                                                               use_principal_axis=use_principal_axis)
         else:
@@ -743,7 +744,7 @@ def register(im_mov: Image.Image,
                                                                 fix_pil=im_fix_r,
                                                                 mov_mask_pil=mask_mov_r,
                                                                 defaultvalue=defaultvalue,
-                                                                type_of_transform='Affine')
+                                                                type_of_transform=type_of_transform)
 
         # if there is indication for a transform at all, do it
         # else, just copy the original structures. Make note that at this point the mask
@@ -878,6 +879,7 @@ def sc_register(adata_mov,
                 mode='dense',
                 search_factor=20,
                 use_principal_axis=False,
+                type_of_transform='Affine',
                 verbose=False):
     """
     Completely preprocess, affinely align, and densely align a moving and
@@ -918,6 +920,7 @@ def sc_register(adata_mov,
     mask_fn : function
         A function that takes in a single argument (a PIL.Image.Image) and converts
         it to a PIL.Image.Image mask of mode '1'.
+        Default 'standard_mask_fn' only works for RGB images but not grayscale images
     defaultvalue : PIL.Image.Image
         If the image is aligned such that the the new image contains points from outside
         the domain of the original image, this is the value that will be inserted as
@@ -1055,6 +1058,7 @@ def sc_register(adata_mov,
                     dense_normalize=dense_normalize,
                     search_factor=search_factor,
                     use_principal_axis=use_principal_axis,
+                    type_of_transform=type_of_transform,
                     verbose=verbose)
     
     # Update information in the destination anndata.
@@ -1088,8 +1092,10 @@ def stacker_register(slices,
                 inplace=False,
                 spot_diameter_unscaled=None,
                 mode='dense',
-                search_factor=20,
+                search_factor=5,
                 use_principal_axis=False,
+                type_of_prep='Affine',  
+                output_dff=False,
                 verbose=False):
     """
     Completely preprocess, affinely align, and densely align a moving and
@@ -1220,9 +1226,17 @@ def stacker_register(slices,
                 mode=mode,
                 search_factor=search_factor,
                 use_principal_axis=use_principal_axis,
+                type_of_transform=type_of_prep,
                 verbose=verbose)
-             aligned[each]=rs[0]
-             aligned[ref_index]=slices[ref_index]
+             if output_dff:
+                 dff={'af_deff':rs[1]['affine']['deff'],'af_inv_deff':rs[1]['affine']['inv_deff'],
+                 'dense_deff':rs[1]['dense']['deff'],'dense_inv_deff':rs[1]['dense']['inv_deff']}
+                 aligned[each]=[rs[0],dff]
+                 aligned[ref_index]=[slices[ref_index],{}]
+             else:
+                 aligned[each]=rs[0]
+                 aligned[ref_index]=slices[ref_index]
+                
     if alignment_mode=='templateless':
         for each in range(len(slices)):
             rest=set(range(len(slices))).difference(set([each]))
@@ -1257,6 +1271,7 @@ def stacker_register(slices,
                         mode=mode,
                         search_factor=search_factor,
                         use_principal_axis=use_principal_axis,
+                        type_of_transform=type_of_prep,        
                         verbose=verbose)
                 final_spatial=final_spatial+rs[0].obsm['spatial']   
         

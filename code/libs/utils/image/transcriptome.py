@@ -41,7 +41,7 @@ def getCountourImage2(seg_image):
     return seg_image
 
 
-def makeContourImg(adata,lbl_map,maskval=0,med_filter_size=4,trimMax=3,res="hires",tomerge=None):
+def makeContourImg1(adata,lbl_map,maskval=0,med_filter_size=4,trimMax=3,res="hires",tomerge=None):
     spatial_id=list(adata.uns.keys())[0]
     library_id=list(adata.uns[spatial_id].keys())[0]
 
@@ -92,6 +92,7 @@ def makeContourImg(adata,lbl_map,maskval=0,med_filter_size=4,trimMax=3,res="hire
     return lbl_map,contourimg2
 
 
+
 ## generate label map based on known cluster assignment of tissue spots or cells
 ## follow the voronoi rule to assign label to each pixel
 def dilateLBL(annots,stobj,resolution="cluster",offset=100,res="hires"):
@@ -135,9 +136,9 @@ def createCompositeImg(adata,clust_file,res="hires",maskval=0,med_filter_size=4,
             - spotID (id of spots/cells)
             - cluster (cluster assignment of spots/cells, numerical values)
     res:  key value to access the tissue image stored in adata
-    maskval: parameters passed onto makeContourImg
+    maskval: parameters passed onto makeContourImg1
     med_filter_size: paramter passed onto scipy.ndimage.median_filter
-    trimMax: parameters passed onto makeContourImg
+    trimMax: parameters passed onto makeContourImg1
     """
     spatial_id=list(adata.uns.keys())[0]
     library_id=list(adata.uns[spatial_id].keys())[0]
@@ -146,9 +147,10 @@ def createCompositeImg(adata,clust_file,res="hires",maskval=0,med_filter_size=4,
     annots.index=annots['spotID']
     ol=list(set(annots.index.tolist()) & set(adata.obs.index.tolist()))
     annots=annots.loc[ol]
-
+    adata=adata[annots.index,]
+    
     lbl_map=np.transpose(dilateLBL(annots,adata,resolution='cluster',offset=100))
-    [lbl_map,contourimg]=makeContourImg(adata,lbl_map,maskval=0,med_filter_size=4,trimMax=2)
+    [lbl_map,contourimg]=makeContourImg1(adata,lbl_map,maskval=maskval,med_filter_size=med_filter_size,trimMax=trimMax)
     
     orgimg=adata.uns[spatial_id][library_id]['images'][res].copy()
     combo_unwarped=orgimg
